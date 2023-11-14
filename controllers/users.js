@@ -100,15 +100,10 @@ const deleteUser = async (req = request, res = response) => {
     try {
 
         const user = await User.findByPk(id);
-        if (!user) {
-            return res.status(404).json({
-                msg: `User with ${id} not found`
-            });
-        }
 
         await user.update({ state: false })
 
-        res.json({
+        res.status(200).json({
             msg: 'user deleted',
             user
         })

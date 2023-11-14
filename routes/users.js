@@ -30,6 +30,9 @@ router.put('/:id', [
 
 router.delete('/:id', [
     //middlewares
+    check('id', 'The ID is not valid').isUUID(),
+    check('id').custom(existsUserById),
+    validateFields
 ], deleteUser);
 
 module.exports = router;
