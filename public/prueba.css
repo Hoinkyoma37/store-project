@@ -1,0 +1,39 @@
+#form{
+ 
+   text-align: center;
+}
+.form_input{
+  margin: 5px 0px;
+  width: 70%;
+}
+#form_input {
+  font-size: 30px;
+}
+.testinput{
+   width: 559px;left: 50px;
+
+}
+
+#container_form{
+   width: 50vw;
+   background-color: rgb(37, 28, 28);
+   border-radius: 3px;
+   box-shadow: 4px 4px 9px;
+   padding-top: 5px;
+   font-size: 10px;
+   position: absolute;
+   
+}
+#submit{
+   width: 15%;
+   border-radius: 5px;
+   transition: 0.3s ease-in;
+   border: none;
+   box-shadow: 2px 2px 9px  rgb(241, 170, 36);
+   font-size: 1.5em;
+}
+#submit:hover{
+   background-color: rgb(241, 193, 32);
+   box-shadow: 2px 2px 9px  #e4d5d5;
+   
+}
