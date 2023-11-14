@@ -37,27 +37,6 @@ const usersPost = async (req = request, res = response) => {
 
     try {
 
-        // Email Validation
-        const emailExists = await User.findOne({
-            where: { email: body.email }
-        });
-        if (emailExists) {
-            return res.status(400).json({
-                msg: `The e-mail ${body.email} is already taken`
-            });
-        }
-
-        // Role Validation
-        // const rolExists = await Role.findOne({
-        //     where: { role: body.role }
-        // })
-
-        // if (!rolExists) {
-        //     return res.json({
-        //         msg: `The role ${body.role} is not saved in the Database`
-        //     });
-        // }
-
         //Assign the values
         const user = new User(body);
 
