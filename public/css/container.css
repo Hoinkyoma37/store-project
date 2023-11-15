@@ -35,14 +35,14 @@
     color: var(--secondary-color-dark);
 }
 .div_container img{
-    width: 50%;
+    width: 75%;
     object-fit:contain;
     height: 200px;
     margin-top: 20px;
     transition: 0.3s ease-in;
 }
 .div_img{
-    width: 50%;
+    width: 75%;
     object-fit:contain;
     height: 200px;
     margin-top: 20px;

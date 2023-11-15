@@ -2,11 +2,7 @@ let add= document.getElementById("addButton");
 let container_1= document.getElementById("container_1");
 let form= document.getElementById("container_form");
 let send= document.getElementById("submit");
-send.onclick = ()=>{
-  form.classList.toggle("display_F");
-  container.classList.toggle("pointer");
-  document.getElementById('form').reset();
-}
+
 
 
 //buttom1
@@ -14,7 +10,7 @@ add.onclick= function () {
   displayNav();
   form.classList.toggle("display_F");
   container.classList.toggle("pointer");
-  send.onclick;
+ 
 }     
   
   

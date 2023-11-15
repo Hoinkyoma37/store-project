@@ -1,4 +1,5 @@
 const { DataTypes, UUIDV4 } = require('sequelize');
+const { v4: uuid } = require('uuid');
 
 const { db } = require('../db/db');
 
@@ -42,7 +43,15 @@ const User = db.define('users', {
         defaultValue: false
     },
 }, {
-    timestamps: false
+    toJSON: {
+        value: function () {
+            return {
+                name: this.name,
+                uid: this.id
+            }
+        }
+    },
+    timestamps: false,
 });
 
 // User.hasOne(Role, {

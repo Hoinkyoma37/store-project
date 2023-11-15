@@ -13,6 +13,6 @@ ul{
     padding: 0px;
 }
 input{
-    border: none;
+    border-radius: 5px;
 }
 

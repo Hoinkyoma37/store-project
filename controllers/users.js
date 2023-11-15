@@ -101,10 +101,12 @@ const deleteUser = async (req = request, res = response) => {
 
         const user = await User.findByPk(id);
 
-        await user.update({ state: false })
+        await user.update({ state: false });
+
+        const userAuth = req.user
 
         res.status(200).json({
-            msg: 'user deleted',
+            userAuth,
             user
         })
 

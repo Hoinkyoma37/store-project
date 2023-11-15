@@ -6,7 +6,7 @@ let body= document.querySelector("body");
 
 const displayNav= ()=>{
   nav.classList.toggle("hidden");
-  document.getElementById('form').reset();
+
   if (nav.classList.contains("hidden")) {
     nav.style.left="-50vw";
     body.style.overflow="auto";
@@ -29,6 +29,7 @@ button.addEventListener("click",function () {
     container.classList.toggle("pointer");
 
   }
+  document.getElementById('form').reset();
 }) 
 
 

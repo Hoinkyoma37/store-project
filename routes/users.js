@@ -5,6 +5,7 @@ const validateFields = require("../middlewares/validate-field");
 
 const { usersPost, userGet, updateUser, deleteUser } = require("../controllers/users");
 const { isEmailValid, isRoleValid, existsUserById } = require("../helpers/db-validators");
+const { validateJWT } = require("../middlewares/validate-jwt");
 
 const router = Router();
 
@@ -30,6 +31,7 @@ router.put('/:id', [
 
 router.delete('/:id', [
     //middlewares
+    validateJWT,
     check('id', 'The ID is not valid').isUUID(),
     check('id').custom(existsUserById),
     validateFields
