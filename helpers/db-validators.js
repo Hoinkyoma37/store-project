@@ -30,13 +30,8 @@ const existsUserById = async (id) => {
     }
 }
 
-const isAdmin = async (role = '') => {
-
-}
-
 module.exports = {
     isRoleValid,
     isEmailValid,
-    existsUserById,
-    isAdmin
+    existsUserById
 }

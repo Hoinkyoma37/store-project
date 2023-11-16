@@ -28,7 +28,6 @@ const userGet = async (req = request, res = response) => {
             err: error
         })
     }
-
 }
 
 const usersPost = async (req = request, res = response) => {
@@ -50,7 +49,7 @@ const usersPost = async (req = request, res = response) => {
     } catch (error) {
         res.status(500).json({
             msg: 'Database Error',
-            error //error.parent.detail
+            error
         })
     }
 }
@@ -62,6 +61,7 @@ const updateUser = async (req = request, res = response) => {
 
     try {
 
+        //Validate user's existence
         const user = await User.findByPk(id);
 
         if (!user) {
@@ -70,23 +70,23 @@ const updateUser = async (req = request, res = response) => {
             })
         }
 
-        //Password hash
+        //Password hashing
         if (body.password) {
             const salt = bcryptjs.genSaltSync();
             body.password = bcryptjs.hashSync(body.password, salt)
         }
 
+        //Updating
         await user.update(body)
 
         res.json({
             msg: 'user updated',
-            body: body,
             user
         })
 
     } catch (error) {
         res.status(500).json({
-            msg: 'Error',
+            msg: 'Server Error',
             error
         })
     }
@@ -103,12 +103,7 @@ const deleteUser = async (req = request, res = response) => {
 
         await user.update({ state: false });
 
-        const userAuth = req.user
-
-        res.status(200).json({
-            userAuth,
-            user
-        })
+        res.status(200).json({ deleted_user: user.dataValues })
 
     } catch (error) {
         res.status(500).json({
@@ -116,7 +111,6 @@ const deleteUser = async (req = request, res = response) => {
         })
     }
 }
-
 
 module.exports = {
     userGet,

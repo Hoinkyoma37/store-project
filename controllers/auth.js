@@ -1,9 +1,8 @@
 const { request, response } = require("express");
 const bcryptjs = require('bcryptjs');
 
-const User = require("../models/user");
+const { User } = require('../models');
 const genJWT = require("../helpers/genJWB");
-
 
 const login = async (req = request, res = response) => {
 
@@ -11,40 +10,45 @@ const login = async (req = request, res = response) => {
 
     try {
 
-        const user = await User.findAll({ where: { email: email } });
+        //user existence
+        const user = await User.findOne({ where: { email: email } });
 
         if (!user) {
-            return res.json({
-                msg: 'User/Password are not correct - email'
+            return res.status(400).json({
+                msg: 'Wrong User email/password  - email'
             })
         }
 
+        //user is not deleted
         if (user.state === false) {
             return res.status(400).json({
-                msg: '- state false'
+                msg: 'Wrong email/password - state false'
             })
         }
 
-        const validPassword = bcryptjs.compareSync(password, (user[0].dataValues.password));
+        // password validation
+        const validPassword = bcryptjs.compareSync(password, (user.dataValues.password));
 
-        if (validPassword) {
+        if (!validPassword) {
             return res.status(400).json({
-                msg: '- Wrong Password'
+                msg: 'wrong email/password - Wrong Password'
             });
         }
 
-
-        // JWT
-        const token = await genJWT(user.uid)
+        // generate JWT
+        const token = await genJWT(user.dataValues.id);
 
         res.status(200).json({
-            password,
-            user,
+            msg: `The user ${user.dataValues.name} is logged in - Success`,
             token
         })
 
     } catch (error) {
-        return res.send("Data Base error")
+        console.log(error)
+        return res.status(500).json({
+            msg: "Data Base error",
+            error
+        })
     }
 }
 

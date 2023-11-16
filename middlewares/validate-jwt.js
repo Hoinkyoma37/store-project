@@ -1,12 +1,13 @@
 const { request, response } = require('express');
 const jwt = require('jsonwebtoken');
 
-const User = require('../models/user');
+const { User } = require('../models')
 
 const validateJWT = async (req = request, res = response, next) => {
 
     const token = req.header('x-token');
 
+    //Token Validation
     if (!token) {
         return res.status(401).json({
             msg: 'No token passed'
@@ -15,24 +16,38 @@ const validateJWT = async (req = request, res = response, next) => {
 
     try {
 
-        const payload = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+        const { id } = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
-        const user = await User.findByPk(uid);
+        const user = await User.findByPk(id);
 
-        // req.user = user
+        //User validation
+        if (!user) {
+            return res.status(401).json({
+                msg: `the user ${user.dataValues.name} is not in the db`
+            })
+        }
 
+        //State validation
+        if (!user.dataValues.state) {
+            return res.status(401).json({
+                msg: `the user ${user.dataValues.name} is deleted from the db`
+            })
+        }
+
+        const userData = user.dataValues
+
+        req.user = userData
         next()
+
 
     } catch (error) {
         res.status(401).json({
             msg: 'Not Valid Token',
-            user
+            err: error
         })
 
     }
 
 }
 
-module.exports = {
-    validateJWT
-}
+module.exports = validateJWT

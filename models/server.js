@@ -14,9 +14,9 @@ class Server {
             items: '/api/items',
             uploads: '/api/uploads',
             users: '/api/users'
-        }
+        };
 
-        this.dbConnection()
+        this.dbConnection();
 
         //Middleware
         this.middleware();
@@ -28,12 +28,12 @@ class Server {
     async dbConnection() {
 
         try {
-            await db.sync({ alter: true })
-            console.log(`Database online`)
+            await db.sync({ alter: true });
+            console.log(`Database online`);
 
         } catch (err) {
-            throw new Error(err)
-            console.log(err)
+            throw new Error(err);
+            console.log(err);
         }
     }
 
@@ -53,24 +53,22 @@ class Server {
             useTempFiles: true,
             tempFileDir: '/temp/',
             createParentPath: true
-        }))
+        }));
 
     }
 
     routes() {
-        this.app.use(this.paths.auth, require('../routes/auth'))
+        this.app.use(this.paths.auth, require('../routes/auth'));
         this.app.use(this.paths.categories, require('../routes/categories'));
         this.app.use(this.paths.items, require('../routes/items'));
         this.app.use(this.paths.uploads, require('../routes/uploads'));
         this.app.use(this.paths.users, require('../routes/users'));
-
     }
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`App running on port: ${this.port}`)
-        })
+            console.log(`App running on port: ${this.port}`);
+        });
     }
 }
-
-module.exports = Server
+module.exports = Server;
