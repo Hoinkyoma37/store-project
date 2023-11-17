@@ -6,4 +6,4 @@ const db = new Sequelize('pro', 'postgres', 'x', {
     dialect: 'postgres'/* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
 });
 
-module.exports = { db }
+module.exports = db;

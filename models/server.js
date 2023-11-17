@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const { db } = require('../db/db');
 const fileUpload = require('express-fileupload');
+
+const db = require('../db/db');
+require('./associations');
 
 class Server {
 
@@ -29,7 +31,7 @@ class Server {
 
         try {
             await db.sync({ alter: true });
-            console.log(`Database online`);
+            console.log('DB Online');
 
         } catch (err) {
             throw new Error(err);

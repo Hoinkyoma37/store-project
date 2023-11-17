@@ -13,7 +13,8 @@ const userGet = async (req = request, res = response) => {
         const [total, users] = await Promise.all([
             await User.count({ where: { state: true } }),
             await User.findAll({
-                where: { state: true }, limit: limit, offset: since
+                where: { state: true }, limit: limit, offset: since,
+                attributes: ['name', 'email', 'state', 'role']
             })
         ])
 
@@ -44,12 +45,15 @@ const usersPost = async (req = request, res = response) => {
         user.password = bcryptjs.hashSync(password, salt);
 
         await user.save();
-        res.status(201).json({ user });
+
+        res.status(201).json({
+            msg: `User ${user.dataValues.name} created successfully`,
+            user
+        });
 
     } catch (error) {
         res.status(500).json({
             msg: 'Database Error',
-            error
         })
     }
 }
@@ -86,9 +90,9 @@ const updateUser = async (req = request, res = response) => {
 
     } catch (error) {
         res.status(500).json({
-            msg: 'Server Error',
-            error
+            msg: 'Server Error'
         })
+        console.log(error)
     }
 
 }

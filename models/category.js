@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const { db } = require('../db/db');
+const db = require('../db/db');
 
 const Category = db.define('category', {
 
@@ -18,14 +18,9 @@ const Category = db.define('category', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true
-    },
-    user: {
-        type: DataTypes.UUID,
-        allowNull: false,
     }
 }, {
     timestamps: false
-}
-)
+});
 
 module.exports = Category;
