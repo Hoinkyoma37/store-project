@@ -12,7 +12,7 @@ const getCategories = async (req = request, res = response) => {
         const [total, categories] = await Promise.all([
             await Category.count({ where: { state: true } }),
             await Category.findAll({
-                where: { state: true }, limit: limit, offset: since
+                where: { state: true }, limit: limit, offset: since,
             })
         ])
 
@@ -31,6 +31,26 @@ const getCategories = async (req = request, res = response) => {
 
 const getCategory = async (req = request, res = response) => {
 
+    const { id } = req.params
+
+    const category = await Category.findByPk(id);
+
+    try {
+
+        if (!category) {
+            return res.status(400).json({
+                msg: `the category with id: ${id} does not exist in the db`
+            })
+        } res.status(200).json({
+            msg: 'Success',
+            category
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: 'database error'
+        })
+    }
 }
 
 const postCategory = async (req = request, res = response) => {
@@ -70,15 +90,49 @@ const postCategory = async (req = request, res = response) => {
 }
 
 const putCategory = async (req = request, res = response) => {
-    res.json({
-        msg: 'put Route'
-    })
+
+    const { id } = req.params
+    const { state, userId, ...data } = req.body
+
+
+    try {
+
+        data.userId = req.user.id;
+        data.name = data.name.toUpperCase();
+
+        console.log(data)
+
+        const category = await Category.findByPk(id);
+
+        await category.update(data);
+
+        res.status(200).json({ category })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: 'db error',
+            error
+        })
+    }
 }
 
 const deleteCategory = async (req = request, res = response) => {
-    res.json({
-        msg: 'delete Route'
-    })
+
+    const { id } = req.params;
+
+    try {
+
+        const category = await Category.findByPk(id);
+
+        await category.update({ state: false });
+
+        res.status(200).json({ deleted_category: category.dataValues })
+
+    } catch (error) {
+        res.status(500).json({
+            error
+        })
+    }
 }
 
 

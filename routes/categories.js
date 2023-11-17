@@ -2,7 +2,8 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 const { postCategory, getCategories, getCategory, putCategory, deleteCategory } = require("../controllers/categories");
-const { validateFields, validateJWT, hasRole } = require("../middlewares");
+const { validateFields, validateJWT, hasRole, isAdminRole } = require("../middlewares");
+const { existCategory } = require("../helpers/db-validators");
 
 
 const router = Router();
@@ -13,7 +14,12 @@ const router = Router();
 router.get('/', getCategories);
 
 //Public
-router.get('/:id', getCategory);
+router.get('/:id', [
+    check('id', 'the id needs to be passed').not().isEmpty(),
+    check('id', `the id is not allowed`).isUUID(),
+    check('id').custom(existCategory),
+    validateFields
+], getCategory);
 
 //Create a category - the Admin - private
 router.post('/', [
@@ -24,9 +30,21 @@ router.post('/', [
 ], postCategory)
 
 //Update a category - Admin - private
-router.put('/:id', putCategory);
+router.put('/:id', [
+    validateJWT,
+    check('name', 'name must be passed').not().isEmpty(),
+    check('id', 'is not a uuid').isUUID(),
+    check('id').custom(existCategory),
+    validateFields
+], putCategory);
 
 //Delete a category - Admin - private
-router.delete('/:id', deleteCategory);
+router.delete('/:id', [
+    validateJWT,
+    isAdminRole,
+    check('id', 'is not a uuid').isUUID(),
+    check('id').custom(existCategory),
+    validateFields
+], deleteCategory);
 
 module.exports = router;
