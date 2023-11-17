@@ -1,8 +1,10 @@
 const { request, response } = require("express");
 const bcryptjs = require('bcryptjs');
 
-const { User } = require('../models');
+const User = require('../models/user');
+
 const genJWT = require("../helpers/genJWB");
+
 
 const login = async (req = request, res = response) => {
 
@@ -11,7 +13,7 @@ const login = async (req = request, res = response) => {
     try {
 
         //user existence
-        const user = await User.findOne({ where: { email: email } });
+        const user = await User.findOne({ where: { email: email } })
 
         if (!user) {
             return res.status(400).json({
@@ -51,7 +53,6 @@ const login = async (req = request, res = response) => {
         })
     }
 }
-
 
 module.exports = {
     login

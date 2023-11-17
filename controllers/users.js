@@ -2,7 +2,6 @@ const { request, response } = require("express");
 const bcryptjs = require('bcryptjs');
 
 const User = require("../models/user");
-const Role = require("../models/role");
 
 const userGet = async (req = request, res = response) => {
 
@@ -13,8 +12,7 @@ const userGet = async (req = request, res = response) => {
         const [total, users] = await Promise.all([
             await User.count({ where: { state: true } }),
             await User.findAll({
-                where: { state: true }, limit: limit, offset: since,
-                attributes: ['name', 'email', 'state', 'role']
+                where: { state: true }, limit: limit, offset: since
             })
         ])
 

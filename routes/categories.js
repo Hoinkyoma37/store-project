@@ -19,7 +19,7 @@ router.get('/:id', getCategory);
 router.post('/', [
     check('name', 'Name is required').not().isEmpty(),
     validateJWT,
-    hasRole('ADMIN_ROLE'),
+    hasRole('ADMIN_ROLE', 'USER_ROLE'),
     validateFields,
 ], postCategory)
 

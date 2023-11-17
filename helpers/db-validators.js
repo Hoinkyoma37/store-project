@@ -3,13 +3,10 @@ const User = require("../models/user");
 
 const isRoleValid = async (role = '') => {
 
-    const roleExists = await Role.findOne({
-        where: { role: role }
-    })
+    const roleExists = await Role.findOne({ where: { role: role } })
     if (!roleExists) {
         throw new Error(`the role ${role} does not exists in the database`)
     }
-
 }
 
 const isEmailValid = async (email = '') => {

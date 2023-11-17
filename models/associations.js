@@ -23,3 +23,12 @@ User.hasMany(Item, {
 })
 
 Item.belongsTo(User);
+
+Category.hasMany(Item, {
+    foreignKey: {
+        type: DataTypes.UUID,
+        allowNull: false
+    }
+})
+
+Item.belongsTo(Category)

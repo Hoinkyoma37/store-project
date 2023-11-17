@@ -35,11 +35,9 @@ const hasRole = (...roles) => {
                 msg: `The service needs one of these roles ${roles}`
             })
         }
-
         next()
     }
 }
-
 
 module.exports = {
     isAdminRole,

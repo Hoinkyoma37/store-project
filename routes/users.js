@@ -11,6 +11,7 @@ const router = Router();
 router.get('/', userGet)
 
 router.post('/', [
+
     check('name', 'A name is required').not().isEmpty().isAlpha(),
     check('email', 'the e-mail is required or you passed a wrong e-mail').isEmail(),
     check('email').custom(isEmailValid),
@@ -22,14 +23,18 @@ router.post('/', [
 
 router.put('/:id', [
     //middlewares
+
     check('id', 'The ID is not valid').isUUID(),
     check('id').custom(existsUserById),
     check('role').custom(isRoleValid),
+    validateJWT,
+    hasRole('USER_ROLE', 'ADMIN_ROLE'),
     validateFields
 ], updateUser);
 
 router.delete('/:id', [
     //middlewares
+
     validateJWT,
     // isAdminRole,
     hasRole('ADMIN_ROLE'),

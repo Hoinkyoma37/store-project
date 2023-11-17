@@ -1,58 +1,81 @@
 const { request, response } = require("express");
-const { Category } = require("../models");
 
-const getCategories = (req = request, res = response) => {
-    res.json({
-        msg: 'Hello World'
-    })
+const Category = require("../models/category");
+
+
+const getCategories = async (req = request, res = response) => {
+
+    const { limit = 5, since = 0 } = req.query;
+
+    try {
+
+        const [total, categories] = await Promise.all([
+            await Category.count({ where: { state: true } }),
+            await Category.findAll({
+                where: { state: true }, limit: limit, offset: since
+            })
+        ])
+
+        res.status(200).json({
+            total,
+            categories
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Database error',
+            err: error
+        })
+    }
 }
 
-const getCategory = (req = request, res = response) => {
-    res.json({
-        msg: 'get category by id'
-    })
+const getCategory = async (req = request, res = response) => {
+
 }
 
 const postCategory = async (req = request, res = response) => {
 
     // Validate the Category in the db 
-    const category = req.body.name.toUpperCase();
+    const name = req.body.name.toUpperCase();
 
-    const categoryDb = await Category.findOne({ where: { name: category } })
-    console.log(categoryDb)
+    const categoryDb = await Category.findOne({ where: { name: name } });
 
     try {
 
-        // if (!categoryDb) {
-        //     return res.status(400).json({
-        //         msg: 'The category already exists'
-        //     })
-        // }
-        const data = {
-            name: category,
-            user: req.user.id
+        if (categoryDb) {
+            return res.status(400).json({
+                msg: ` The category ${categoryDb.dataValues.name} already exists`
+            })
         }
 
-        console.log(data)
+        //Generate the Data
+        const data = { name: name, userId: req.user.id }
+
+        const category = await new Category(data)
+
+        await category.save()
+
+        res.status(201).json({
+            msg: 'Created',
+            data
+        })
 
     } catch (error) {
-
+        res.status(500).json({
+            msg: 'Db Error'
+        })
+        console.log(error)
     }
 
-    //Generate the Data
-
-    res.json({
-        msg: category
-    })
 }
 
-const putCategory = (req = request, res = response) => {
+const putCategory = async (req = request, res = response) => {
     res.json({
         msg: 'put Route'
     })
 }
 
-const deleteCategory = (req = request, res = response) => {
+const deleteCategory = async (req = request, res = response) => {
     res.json({
         msg: 'delete Route'
     })
