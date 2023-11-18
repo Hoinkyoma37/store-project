@@ -31,7 +31,7 @@ const userGet = async (req = request, res = response) => {
 
 const usersPost = async (req = request, res = response) => {
 
-    const { password, ...body } = req.body;
+    const { password, name, email, ...body } = req.body;
 
     try {
 
@@ -41,6 +41,9 @@ const usersPost = async (req = request, res = response) => {
         //Password Hashing
         const salt = bcryptjs.genSaltSync();
         user.password = bcryptjs.hashSync(password, salt);
+        //Save in lowercase
+        user.name = name.toLowerCase();
+        user.email = email.toLowerCase();
 
         await user.save();
 

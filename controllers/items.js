@@ -53,7 +53,7 @@ const postItem = async (req = request, res = response) => {
 
     const { state, user_id, ...body } = req.body;
 
-    const itemExist = await Item.findOne({ where: { name: body.name } });
+    const itemExist = await Item.findOne({ where: { name: req.body.name.toUpperCase() } });
 
     try {
 

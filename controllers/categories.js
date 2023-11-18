@@ -13,6 +13,7 @@ const getCategories = async (req = request, res = response) => {
             await Category.count({ where: { state: true } }),
             await Category.findAll({
                 where: { state: true }, limit: limit, offset: since,
+                attributes: { exclude: ['state', 'user_id'] }
             })
         ])
 
@@ -33,7 +34,7 @@ const getCategory = async (req = request, res = response) => {
 
     const { id } = req.params
 
-    const category = await Category.findByPk(id);
+    const category = await Category.findByPk(id, { attributes: { exclude: ['user_id', 'state'] } });
 
     try {
 
@@ -77,7 +78,7 @@ const postCategory = async (req = request, res = response) => {
 
         res.status(201).json({
             msg: 'Created',
-            data
+            name
         })
 
     } catch (error) {
@@ -102,11 +103,11 @@ const putCategory = async (req = request, res = response) => {
 
         // console.log(data)
 
-        const category = await Category.findByPk(id);
+        const category = await Category.findByPk(id, { attributes: { exclude: ['user_id', 'state'] } });
 
         await category.update(data);
 
-        res.status(200).json({ category })
+        res.status(200).json({ msg: 'Updated', name: category.name })
 
     } catch (error) {
         res.status(500).json({
@@ -126,7 +127,7 @@ const deleteCategory = async (req = request, res = response) => {
 
         await category.update({ state: false });
 
-        res.status(200).json({ deleted_category: category.dataValues })
+        res.status(200).json({ deleted_category: category.dataValues.name })
 
     } catch (error) {
         res.status(500).json({
@@ -134,7 +135,6 @@ const deleteCategory = async (req = request, res = response) => {
         })
     }
 }
-
 
 module.exports = {
     getCategories,

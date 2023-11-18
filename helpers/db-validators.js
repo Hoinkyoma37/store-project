@@ -14,7 +14,7 @@ const isRoleValid = async (role = '') => {
 const isEmailValid = async (email = '') => {
 
     const emailExists = await User.findOne({
-        where: { email: email }
+        where: { email: email.toLowerCase() }
     });
     if (emailExists) {
         throw new Error(`the email ${email} does exists in the database`)
