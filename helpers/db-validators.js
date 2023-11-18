@@ -1,4 +1,5 @@
 const Category = require("../models/category");
+const Item = require("../models/item");
 const Role = require("../models/role");
 const User = require("../models/user");
 
@@ -28,10 +29,18 @@ const existsUserById = async (id) => {
     }
 }
 
-const existCategory = async (id) => {
+const existCategoryById = async (id) => {
 
     const categoryExists = await Category.findByPk(id)
     if (!categoryExists) {
+        throw new Error(`The id: ${id} does not exists in the db`)
+    }
+}
+
+const existItemById = async (id) => {
+
+    const itemExists = await Item.findByPk(id)
+    if (!itemExists) {
         throw new Error(`The id: ${id} does not exists in the db`)
     }
 }
@@ -40,5 +49,6 @@ module.exports = {
     isRoleValid,
     isEmailValid,
     existsUserById,
-    existCategory
+    existCategoryById,
+    existItemById
 }

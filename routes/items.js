@@ -1,16 +1,39 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 
-const { getItem, postItem, putItem, deleteItem } = require("../controllers/items");
+const { validateFields, validateJWT, hasRole } = require('../middlewares')
+
+const { getItem, postItem, putItem, deleteItem, getItemById } = require("../controllers/items");
+const { existCategoryById } = require("../helpers/db-validators");
 
 const router = Router();
 
+// Public
 router.get('/', getItem)
 
-router.post('/', postItem)
+// Public
+router.get('/:id', [
+    check('id', 'need to pass the id').not().isEmpty(),
+    check('id', 'need to be uuid type').isUUID(),
+    validateFields
+], getItemById)
 
-router.put('/', putItem)
+// VENTAS_ROLE, ADMIN_ROLE
+router.post('/', [
+    // Middleware
+    validateJWT,
+    hasRole('VENTAS_ROLE', 'ADMIN_ROLE'),
+    check('name', 'must passed name').not().isEmpty(),
+    check('name', 'must be letters').isAlpha(),
+    check('category_id', 'must passed the category').isUUID(),
+    check('category_id').custom(existCategoryById),
+    validateFields
+], postItem)//
 
-router.delete('/', deleteItem)
+// VENTAS_ROLE, ADMIN_ROLE
+router.put('/:id', putItem)
+
+// ADMIN_ROLE
+router.delete('/:id', deleteItem)
 
 module.exports = router;

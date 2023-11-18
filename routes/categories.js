@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 
 const { postCategory, getCategories, getCategory, putCategory, deleteCategory } = require("../controllers/categories");
 const { validateFields, validateJWT, hasRole, isAdminRole } = require("../middlewares");
-const { existCategory } = require("../helpers/db-validators");
+const { existCategoryById } = require("../helpers/db-validators");
 
 
 const router = Router();
@@ -17,7 +17,7 @@ router.get('/', getCategories);
 router.get('/:id', [
     check('id', 'the id needs to be passed').not().isEmpty(),
     check('id', `the id is not allowed`).isUUID(),
-    check('id').custom(existCategory),
+    check('id').custom(existCategoryById),
     validateFields
 ], getCategory);
 
@@ -34,7 +34,7 @@ router.put('/:id', [
     validateJWT,
     check('name', 'name must be passed').not().isEmpty(),
     check('id', 'is not a uuid').isUUID(),
-    check('id').custom(existCategory),
+    check('id').custom(existCategoryById),
     validateFields
 ], putCategory);
 
@@ -43,7 +43,7 @@ router.delete('/:id', [
     validateJWT,
     isAdminRole,
     check('id', 'is not a uuid').isUUID(),
-    check('id').custom(existCategory),
+    check('id').custom(existCategoryById),
     validateFields
 ], deleteCategory);
 

@@ -69,7 +69,7 @@ const postCategory = async (req = request, res = response) => {
         }
 
         //Generate the Data
-        const data = { name: name, userId: req.user.id }
+        const data = { name: name, user_id: req.user.id }
 
         const category = await new Category(data)
 
@@ -92,15 +92,15 @@ const postCategory = async (req = request, res = response) => {
 const putCategory = async (req = request, res = response) => {
 
     const { id } = req.params
-    const { state, userId, ...data } = req.body
+    const { state, user_id, ...data } = req.body
 
 
     try {
 
-        data.userId = req.user.id;
+        data.user_id = req.user.id;
         data.name = data.name.toUpperCase();
 
-        console.log(data)
+        // console.log(data)
 
         const category = await Category.findByPk(id);
 

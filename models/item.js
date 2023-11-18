@@ -3,29 +3,31 @@ const db = require("../db/db");
 
 
 const Item = db.define('item', {
+
     item_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
     },
     name: {
         type: DataTypes.STRING,
         allowNull: false
     },
+    state: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
     price: {
         type: DataTypes.FLOAT,
-        allowNull: false
+        defaultValue: 0
     },
-    image: {
-        type: DataTypes.STRING
-    },
-    description: {
-        type: DataTypes.TEXT
-    }
+    image: { type: DataTypes.STRING },
+    available: { type: DataTypes.BOOLEAN, defaultValue: true },
+    description: { type: DataTypes.TEXT }
 }, {
     timestamps: false
 })
-
-
 
 module.exports = Item;
