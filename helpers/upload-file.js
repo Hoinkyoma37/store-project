@@ -20,7 +20,7 @@ const uploadFile = (files, validExtensions = ['jpg', 'jpeg', 'png', 'gif'], fold
             if (err) {
                 reject(err);
             }
-            resolve(uploadPath);
+            resolve(tempName);
         });
     })
 }

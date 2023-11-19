@@ -1,5 +1,6 @@
 const { request, response } = require("express");
 const bcryptjs = require('bcryptjs');
+const genJWT = require('../helpers/genJWB')
 
 const User = require("../models/user");
 
@@ -47,9 +48,14 @@ const usersPost = async (req = request, res = response) => {
 
         await user.save();
 
+        const { id } = user
+
+        const token = await genJWT(id)
+
         res.status(201).json({
             msg: `User ${user.dataValues.name} created successfully`,
-            user
+            user,
+            token
         });
 
     } catch (error) {

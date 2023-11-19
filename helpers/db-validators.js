@@ -45,10 +45,20 @@ const existItemById = async (id) => {
     }
 }
 
+const availableTables = async (table = '', tables = []) => {
+
+    const includeTable = tables.includes(table);
+    if (!includeTable) {
+        throw new Error(`the table ${table} is not available - available tables ${tables}`)
+    }
+    return true
+}
+
 module.exports = {
     isRoleValid,
     isEmailValid,
     existsUserById,
     existCategoryById,
-    existItemById
+    existItemById,
+    availableTables
 }

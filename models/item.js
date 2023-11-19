@@ -25,6 +25,7 @@ const Item = db.define('item', {
     },
     image: { type: DataTypes.STRING },
     available: { type: DataTypes.BOOLEAN, defaultValue: true },
+    number: { type: DataTypes.INTEGER },
     description: { type: DataTypes.TEXT }
 }, {
     timestamps: false
