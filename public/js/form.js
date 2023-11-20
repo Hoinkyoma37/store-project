@@ -1,8 +1,7 @@
+const { response } = require("express");
+
 let inputFile = document.getElementById('file_image');
 let inputIcon = document.getElementById('form_icon');
-
-//let upload = document.getElementById("submit");
-//console.log(imgF);
 
 inputIcon.onclick = (e) => {
 	inputFile.click(e);
@@ -17,10 +16,6 @@ send.onclick = (event) => {
 	let price = document.getElementById("price").value;
 	let name = document.getElementById("name").value;
 	let category_id = document.getElementById("category_id").value
-
-	console.log(imgF.files[0]);
-	console.log(name);
-	console.log(price);
 
 	if (price == '' || name == '' || category_id == '') {
 		alert('empty fields');
@@ -38,14 +33,12 @@ send.onclick = (event) => {
 
 
 		//Login
-		// login()
 
 		//Upload
-		uploadImg(formData);
-
-		//send  data
-
-		postData(name, price, category_id, imgName);
+		uploadImg(formData)
+			.then(imageName => postData(name, price, category_id, imageName)) // Send to DB
+			.then(response => console.log(response))
+		// ;
 	}
 }
 
@@ -59,11 +52,13 @@ async function uploadImg(formData) {
 		body: formData
 
 	});
-
-	const data = await res.json();
-	console.log(data);
+	const data = await res.json()
+	console.log(data)
+	const imgName = data.name
+	return imgName
 }
-async function postData(name, price, category_id, imgF) {
+
+async function postData(name, price, category_id, imgName) {
 	const resp = await fetch("/api/items", {
 		method: "POST",
 		headers: {
@@ -75,12 +70,12 @@ async function postData(name, price, category_id, imgF) {
 			'name': name,
 			'price': price,
 			'category_id': category_id,
-			'image': imgF
+			'image': imgName
 
 		})
 	});
 	const data = await resp.json();
-	console.log(data);
+	console.log(data)
 }
 
 
