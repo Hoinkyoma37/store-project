@@ -8,8 +8,6 @@ inputIcon.onclick = (e) => {
 	inputFile.click(e);
 };
 
-// subir datos
-
 send.onclick = (event) => {
 	form.classList.toggle("display_F");
 	container.classList.toggle("pointer");
@@ -38,6 +36,10 @@ send.onclick = (event) => {
 		const formData = new FormData;
 		formData.append('file', imgF.files[0], imgName);
 
+
+		//Login
+		// login()
+
 		//Upload
 		uploadImg(formData);
 
@@ -48,7 +50,7 @@ send.onclick = (event) => {
 }
 
 async function uploadImg(formData) {
-	await fetch("/api/uploads", {
+	const res = await fetch("/api/uploads", {
 
 		method: "POST",
 		headers: {
@@ -57,14 +59,16 @@ async function uploadImg(formData) {
 		body: formData
 
 	});
+
+	const data = await res.json();
+	console.log(data);
 }
 async function postData(name, price, category_id, imgF) {
-	const res = await fetch("/api/items", {
+	const resp = await fetch("/api/items", {
 		method: "POST",
 		headers: {
 			'Accept': 'application/json',
-			'Content-type': 'application/json',
-			Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRmZmRhMDY4LTAxNjQtNDgyMi05N2U3LTY2YmI0YTI1MzgwNCIsImlhdCI6MTcwMDQxMTkzOSwiZXhwIjoxNzAzMDAzOTM5fQ.LFt2iMZQMlSFDiZpIr0FBZxu1Yn2qObiJatV-KpPB90'
+			'Content-type': 'application/json'
 		},
 		body: JSON.stringify({
 
@@ -72,8 +76,30 @@ async function postData(name, price, category_id, imgF) {
 			'price': price,
 			'category_id': category_id,
 			'image': imgF
+
 		})
 	});
-	const data = await res.json();
+	const data = await resp.json();
 	console.log(data);
 }
+
+
+// Tienes q trabajar en esto para poder restringir el acceso a la api a través de Json web Token
+
+
+// async function login() {
+// 	const res = await fetch("/api/auth/login", {
+// 		method: "POST",
+// 		headers: {
+// 			'Accept': 'application/json',
+// 			'Content-type': 'application/json',
+// 		},
+// 		body: JSON.stringify({
+
+// 			'password': password,
+// 			'email': email
+// 		})
+// 	});
+// 	const data = await res.json();
+// 	console.log(data);
+// }
