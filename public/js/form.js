@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 let inputFile = document.getElementById('file_image');
 let inputIcon = document.getElementById('form_icon');
 
@@ -17,28 +15,28 @@ send.onclick = (event) => {
 	let name = document.getElementById("name").value;
 	let category_id = document.getElementById("category_id").value
 
-	if (price == '' || name == '' || category_id == '') {
+	if (price == '' || name == '' || category_id == ''||imgF.length == 0) {
 		alert('empty fields');
 	} else {
 
 		//image random
-		let r = (Math.random() + 1).toString(36).substring(2);
 
-		let extension = imgF.files[0].name.split('.').pop();
-
-		let imgName = r + '.' + extension;
+		let imgName = imgF.files[0].name
 
 		const formData = new FormData;
 		formData.append('file', imgF.files[0], imgName);
 
 
-		//Login
+		// Login
 
-		//Upload
+		// Upload
 		uploadImg(formData)
 			.then(imageName => postData(name, price, category_id, imageName)) // Send to DB
-			.then(response => console.log(response))
-		// ;
+			.then(c => console.log(c))
+
+		window.location = 'index.html';
+
+		getData().then(d=> console.log(d))
 	}
 }
 
@@ -98,3 +96,13 @@ async function postData(name, price, category_id, imgName) {
 // 	const data = await res.json();
 // 	console.log(data);
 // }
+
+
+
+async function getData() {
+    const res = await fetch("/api/items", {
+		method: 'GET'
+	})
+    const data = await res.json();
+    console.log(data.items);
+}
