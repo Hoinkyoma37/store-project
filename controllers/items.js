@@ -122,7 +122,7 @@ const deleteItem = async (req = request, res = response) => {
 
     try {
 
-        const item = await item.findByPk(id);
+        const item = await Item.findByPk(id);
 
         await item.update({ state: false });
 
