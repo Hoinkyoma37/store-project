@@ -126,7 +126,10 @@ const deleteItem = async (req = request, res = response) => {
 
         await item.update({ state: false });
 
-        res.status(200).json({ deleted_item: item.dataValues })
+        res.status(200).json({ 
+            Ok: true,
+            deleted_item: item.dataValues
+         })
 
     } catch (error) {
         res.status(500).json({
