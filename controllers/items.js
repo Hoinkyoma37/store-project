@@ -88,11 +88,53 @@ const postItem = async (req = request, res = response) => {
 
 const putItem = async (req = request, res = response) => {
 
+    const { id } = req.params;
+    const { body } = req;
+
+    try {
+
+        //Validate user's existence
+        const item = await Item.findByPk(id);
+
+        if (!item) {
+            return res.status(404).json({
+                msg: `Item with ${id} not found`
+            })
+        }
+        //Updating
+        await item.update(body)
+
+        res.json({
+            msg: 'item updated',
+            user
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Server Error'
+        })
+        console.log(error)
+    }
 }
 
 const deleteItem = async (req = request, res = response) => {
+    const { id } = req.params;
 
+    try {
+
+        const item = await item.findByPk(id);
+
+        await item.update({ state: false });
+
+        res.status(200).json({ deleted_item: item.dataValues })
+
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Database error'
+        })
+    }
 }
+
 
 module.exports = {
     getItem,

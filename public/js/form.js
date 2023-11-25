@@ -34,7 +34,7 @@ send.onclick = (event) => {
 			.then(imageName => postData(name, price, category_id, imageName)) // Send to DB
 			.then(c => console.log(c))
 
-		window.location = 'index.html';
+		// window.location.href = 'index.html';
 
 		getData().then(d=> console.log(d))
 	}
@@ -98,11 +98,18 @@ async function postData(name, price, category_id, imgName) {
 // }
 
 
+async function getImage(table = 'items', id){
+	const res  = await fetch(`/api/uploads/${table}/${id}`, {
+		method: 'GET',
+	});
 
-async function getData() {
-    const res = await fetch("/api/items", {
-		method: 'GET'
-	})
-    const data = await res.json();
-    console.log(data.items);
+	return res
+}
+
+async function getData(){
+	const res = await fetch("api/items");
+	data = res.json()
+	for (item of data.items){
+		const image = getImage({id:item.image})
+	}
 }

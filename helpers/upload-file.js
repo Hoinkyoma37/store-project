@@ -13,8 +13,8 @@ const uploadFile = (files, validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'JPG'
             return reject(`The extension ${extension} is not available, just ${validExtensions}`)
         }
 
-        const tempName = uuid() + '.' + extension
-        const uploadPath = path.join(__dirname, '../uploads/', folder, tempName);
+        const tempName = uuid() + '.' + extension;
+        const uploadPath = path.join(__dirname, '../public/uploads', folder, tempName);
 
         file.mv(uploadPath, (err) => {
             if (err) {

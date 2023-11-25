@@ -64,36 +64,36 @@ const updateImage = async (req = request, res = response) => {
     model.image = name;
     await model.save();
 
-
     res.json({ model })
 }
 
 const showImage = async (req = request, res = response) => {
 
-    const { table, id } = req.params
+    // const { table, id } = req.params;
 
     let model;
 
-    switch (table) {
-        case 'users':
-            model = await User.findByPk(id);
-            if (!model) {
-                return res.status(404).json({ msg: `the user with id: ${id} does not exist in db` })
-            }
-            break;
-        case 'items':
-            model = await Item.findByPk(id);
-            if (!model) {
-                return res.status(404).json({ msg: `the item with id: ${id} does not exist in db` })
-            }
-            break
+    // switch (table) {
+    //     case 'users':
+    //         model = await User.findByPk(id);
+    //         if (!model) {
+    //             return res.status(404).json({ msg: `the user with id: ${id} does not exist in db` })
+    //         }
+    //         break;
+    //     case 'items':
+    //         model = await Item.findByPk(id);
+    //         if (!model) {
+    //             return res.status(404).json({ msg: `the item with id: ${id} does not exist in db` })
+    //         }
+    //         break
 
-        default:
-            res.status(500).json({ msg: 'forgot to validate it' })
-    }
+    //     default:
+    //         res.status(500).json({ msg: 'forgot to validate it' })
+    // }
 
     if (model.image) {
-        const imagePath = path.join(__dirname, '../uploads', table, model.image);
+        const imagePath = path.join(__dirname, '../uploads/images', model.image);
+        console.log(model.image)
         if (fs.existsSync(imagePath)) {
             return res.sendFile(imagePath);
         }

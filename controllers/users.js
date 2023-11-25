@@ -101,7 +101,6 @@ const updateUser = async (req = request, res = response) => {
         })
         console.log(error)
     }
-
 }
 
 const deleteUser = async (req = request, res = response) => {
