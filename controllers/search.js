@@ -58,6 +58,10 @@ const searchCategories = async (term = '', res = response) => {
 
     const categories = await Category.findAll({
 
+        include:{
+            model: Item,
+            attributes: ['name', 'image']
+        },
         where: {
             name: {
                 [Op.like]: `%${term.toLocaleUpperCase()}%`
@@ -123,6 +127,5 @@ const search = async (req = request, res = response) => {
             });
     }
 }
-
 
 module.exports = search;

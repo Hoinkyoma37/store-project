@@ -5,7 +5,7 @@ const User = require('../models/user')
 
 const validateJWT = async (req = request, res = response, next) => {
 
-    const token = req.header('Authorization');
+    const token = req.header('x-token');
 
     //Token Validation
     if (!token) {

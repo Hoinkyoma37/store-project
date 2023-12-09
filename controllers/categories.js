@@ -1,6 +1,7 @@
 const { request, response } = require("express");
 
 const Category = require("../models/category");
+const Item = require("../models/item")
 
 
 const getCategories = async (req = request, res = response) => {
@@ -9,17 +10,20 @@ const getCategories = async (req = request, res = response) => {
 
     try {
 
-        const [total, categories] = await Promise.all([
+        const [ categories] = await Promise.all([
             await Category.count({ where: { state: true } }),
             await Category.findAll({
+                include: {
+                    model: Item,
+                    attributes:['']
+                },
                 where: { state: true }, limit: limit, offset: since,
                 attributes: { exclude: ['state', 'user_id'] }
             })
         ])
 
         res.status(200).json({
-            total,
-            categories
+            categories,
         });
 
     } catch (error) {

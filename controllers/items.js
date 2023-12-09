@@ -65,7 +65,7 @@ const postItem = async (req = request, res = response) => {
         const data = {
             ...body,
             name: body.name.toUpperCase(),
-            // user_id: req.user.id
+            user_id: req.user.id
         }
 
         const item = await new Item(data)
@@ -137,7 +137,6 @@ const deleteItem = async (req = request, res = response) => {
         })
     }
 }
-
 
 module.exports = {
     getItem,

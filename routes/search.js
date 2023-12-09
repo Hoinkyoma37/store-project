@@ -4,6 +4,6 @@ const search = require("../controllers/search");
 
 const router = Router();
 
-router.get('/:table/:term', search)
+router.get('/:table/:term', search);
 
 module.exports = router;

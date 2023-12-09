@@ -21,12 +21,12 @@ router.get('/:id', [
 // VENTAS_ROLE, ADMIN_ROLE
 router.post('/', [
     // Middleware
-    // validateJWT,
-    // hasRole('VENTAS_ROLE', 'ADMIN_ROLE'),
+    validateJWT,
+    hasRole('VENTAS_ROLE', 'ADMIN_ROLE'),
     check('name', 'must passed name').not().isEmpty(),
     check('name', 'must be letters').isAlpha(),
-    // check('category_id', 'must passed the category').isUUID(),
-    // check('category_id').custom(existCategoryById),
+    check('category_id', 'must passed the category').isUUID(),
+    check('category_id').custom(existCategoryById),
     validateFields
 ], postItem)//
 
